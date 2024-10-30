@@ -24,14 +24,14 @@ parser.add_argument(
     '--chars', '-c',
     type=int,
     nargs=1,
-    default=300,
+    default=[300],
     help='Charater limit of names - default is 300'
 )
 parser.add_argument(
     '--number', '-n',
     type=int,
     nargs=1,
-    default=1,
+    default=[1],
     help='Number of names to generate.'
 )
 args = parser.parse_args()
@@ -42,14 +42,6 @@ def get_name(filename):
         name_lines = name_file.readlines()
         choice_name = random.choice(name_lines).replace("\n","")
         return choice_name
-
-def unpack_input(arg):
-    """Determines whether an argument passed needs to be unpacked or not"""
-    if isinstance(arg, list):
-        value, = arg
-    else:
-        value = arg
-    return value
 
 def name_gen(file_args, max_chars, r_count):
     """puts the get_name's together"""
@@ -65,8 +57,8 @@ def name_gen(file_args, max_chars, r_count):
     else:
         return output.strip()
 
-maximum_chars = unpack_input(args.chars)
-names_to_generate = unpack_input(args.number)
+maximum_chars, = args.chars
+names_to_generate, = args.number
 
 while NAMES_GENERATED < names_to_generate:
     name = name_gen(args.names, maximum_chars, R_COUNTER)
