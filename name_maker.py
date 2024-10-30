@@ -7,6 +7,8 @@ import argparse
 import sys
 
 MAX_RECURSION = 300
+R_COUNTER = 0
+NAMES_GENERATED = 0
 
 parser = argparse.ArgumentParser(
     prog="name_maker",
@@ -25,6 +27,13 @@ parser.add_argument(
     default=300,
     help='Charater limit of names - default is 300'
 )
+parser.add_argument(
+    '--number', '-n',
+    type=int,
+    nargs=1,
+    default=1,
+    help='Number of names to generate.'
+)
 args = parser.parse_args()
 
 def get_name(filename):
@@ -34,21 +43,32 @@ def get_name(filename):
         choice_name = random.choice(name_lines).replace("\n","")
         return choice_name
 
+def unpack_input(arg):
+    """Determines whether an argument passed needs to be unpacked or not"""
+    if isinstance(arg, list):
+        value, = arg
+    else:
+        value = arg
+    return value
+
 def name_gen(file_args, max_chars, r_count):
     """puts the get_name's together"""
     output = ''
     for name_file in file_args:
         output += get_name(name_file) + ' '
-    if len(output) > max_chars and MAX_RECURSION > r_count:
-        print(r_count)
+    if len(output) > max_chars + 1 and MAX_RECURSION > r_count:
+        r_count += 1
         return name_gen(file_args, max_chars, r_count)
     if r_count >= MAX_RECURSION:
-        print("WARNING: Maximum recursion depth reached, exiting...")
+        print("WARNING: Maximum recursion depth reached.")
         sys.exit()
     else:
         return output.strip()
 
-R_COUNTER = 0
-maximum_chars, = args.chars
-name = name_gen(args.names, maximum_chars, R_COUNTER)
-print(f"{name}")
+maximum_chars = unpack_input(args.chars)
+names_to_generate = unpack_input(args.number)
+
+while NAMES_GENERATED < names_to_generate:
+    name = name_gen(args.names, maximum_chars, R_COUNTER)
+    print(f"{name}")
+    NAMES_GENERATED += 1
