@@ -14,4 +14,4 @@ default behavior is to use 2 files named `./first_names.txt` and `./last_names.t
 There are options for number of names to generate `-n #` and maximum letter count for generated names `-c #`
 ```
 python3 name_maker.py ./first_names.txt ./last_names.txt -n 2 -c 14 
-```
+```test
