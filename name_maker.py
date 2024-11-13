@@ -37,11 +37,21 @@ parser.add_argument(
 args = parser.parse_args()
 
 def get_name(filename):
-    """gets a name from the provided file"""
-    with open(filename, encoding="utf-8") as name_file:
-        name_lines = name_file.readlines()
-        choice_name = random.choice(name_lines).replace("\n","")
-        return choice_name
+    """gets a name from the provided file (with error handling)"""
+    try:
+        with open(filename, encoding="utf-8") as name_file:
+            name_lines = name_file.readlines()
+            choice_name = random.choice(name_lines).replace("\n","")
+            return choice_name
+    except FileNotFoundError:
+        print(f"File {filename} not found, exiting...")
+        sys.exit()
+    except PermissionError:
+        print(f"You do not have permissions to access {filename}")
+        sys.exit()
+    except Exception as exc:
+        print("Error occurred: ", exc)
+        sys.exit()
 
 def name_gen(file_args, max_chars, r_count):
     """puts the get_name's together"""
