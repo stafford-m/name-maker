@@ -49,9 +49,6 @@ def get_name(filename):
     except PermissionError:
         print(f"You do not have permissions to access {filename}")
         sys.exit()
-    except Exception as exc:
-        print("Error occurred: ", exc)
-        sys.exit()
 
 def name_gen(file_args, max_chars, r_count):
     """puts the get_name's together"""
