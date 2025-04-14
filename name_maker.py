@@ -18,7 +18,7 @@ parser.add_argument(
     'names',
     nargs='*',
     default=['./first_names.txt', './last_names.txt'],
-    help='Input files'
+    help='Input files containing names'
 )
 parser.add_argument(
     '--chars', '-c',
